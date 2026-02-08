@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 
+const LOCATION_STORAGE_KEY = "ramadan-prayer-location";
+
 export interface PrayerTime {
   name: string;
   time: string;
@@ -16,6 +18,20 @@ export interface PrayerTimesData {
   loading: boolean;
   error: string | null;
   city: string;
+}
+
+function loadSavedLocation(): string | null {
+  try {
+    return localStorage.getItem(LOCATION_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveLocation(city: string) {
+  try {
+    localStorage.setItem(LOCATION_STORAGE_KEY, city);
+  } catch {}
 }
 
 export function usePrayerTimes(cityQuery?: string) {
@@ -48,6 +64,7 @@ export function usePrayerTimes(cityQuery?: string) {
         { name: "Maghrib", time: t.Maghrib, arabicName: "المغرب" },
         { name: "Isha", time: t.Isha, arabicName: "العشاء" },
       ];
+      saveLocation(city);
       setData({
         prayers,
         imsak: t.Imsak,
@@ -104,7 +121,11 @@ export function usePrayerTimes(cityQuery?: string) {
     if (cityQuery) {
       fetchByCity(cityQuery);
     } else {
-      if (navigator.geolocation) {
+      // Check for saved location first
+      const savedCity = loadSavedLocation();
+      if (savedCity) {
+        fetchByCity(savedCity);
+      } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (pos) => fetchByCoords(pos.coords.latitude, pos.coords.longitude),
           () => fetchByCity("Mecca")
