@@ -14,7 +14,6 @@ function loadDarkMode(): boolean {
     const stored = localStorage.getItem(DARK_MODE_KEY);
     if (stored !== null) return JSON.parse(stored);
   } catch {}
-  // Default to system preference
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
@@ -44,11 +43,10 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top bar */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
         <div className="container max-w-5xl flex items-center justify-between py-3">
           <h2 className="font-serif text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="text-gold">☪</span> Ramadan Journey
+            <span className="text-gold">☪</span> Rayyan - Ramadan Journey
           </h2>
           <Button variant="ghost" size="sm" onClick={toggleDark} className="h-8 w-8 p-0">
             {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -56,14 +54,37 @@ export default function Index() {
         </div>
       </header>
 
-      <main className="container max-w-5xl py-6 space-y-6">
-        {/* Hero */}
-        <HeroSection hijriDate={date?.hijri || null} gregorianDate={gregorianDate} />
+      <main className="container max-w-7xl py-6">
+        {/* Default layout for mobile and lg */}
+        <div className="2xl:hidden">
+          <div className="mb-6">
+            <HeroSection hijriDate={date?.hijri || null} gregorianDate={gregorianDate} />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1 flex flex-col gap-6">
+              <PrayerTimesCard
+                prayers={prayers}
+                imsak={imsak}
+                city={city}
+                loading={loading}
+                error={error}
+                onSearch={(c) => setCitySearch(c)}
+              />
+              <DailyHadith />
+            </div>
+            <div className="lg:col-span-2">
+              <QuranTracker />
+            </div>
+          </div>
+        </div>
 
-        {/* Main grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Prayer times - sidebar */}
-          <div className="lg:col-span-1">
+        {/* 2xl layout */}
+        <div className="hidden 2xl:grid 2xl:grid-cols-2 2xl:gap-6">
+          <div className="col-span-1 flex flex-col gap-6">
+            <HeroSection hijriDate={date?.hijri || null} gregorianDate={gregorianDate} />
+            <QuranTracker />
+          </div>
+          <div className="col-span-1 flex flex-col gap-6">
             <PrayerTimesCard
               prayers={prayers}
               imsak={imsak}
@@ -72,24 +93,19 @@ export default function Index() {
               error={error}
               onSearch={(c) => setCitySearch(c)}
             />
-          </div>
-
-          {/* Main content */}
-          <div className="lg:col-span-2 space-y-6">
-            <QuranTracker />
             <DailyHadith />
           </div>
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-border/50 py-6 mt-12">
         <div className="container max-w-5xl text-center text-xs text-muted-foreground">
-          <p className="font-serif text-sm text-gold mb-1">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ</p>
+          <p className="font-serif text-sm text-gold mb-1">رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنتَ السَّMِيعُ الْعَلِيمُ</p>
           <p>"Our Lord, accept from us. Indeed You are the Hearing, the Knowing."</p>
-          <p className="mt-2">Built with ❤️ for the Muslim Ummah</p>
+          <p className="mt-2">Built from Soluna for the Muslim Ummah</p>
         </div>
       </footer>
     </div>
   );
 }
+

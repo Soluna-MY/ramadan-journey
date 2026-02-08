@@ -43,7 +43,7 @@ export default function QuranTracker() {
   const percentage = Math.round((completed / TOTAL_DAYS) * 100);
 
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="border-border/50 shadow-sm h-full flex flex-col">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-serif flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function QuranTracker() {
           <Progress value={percentage} className="h-2" />
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow flex flex-col">
         {/* Strategy guide */}
         {showStrategy && (
           <div className="bg-primary/5 border border-primary/10 rounded-lg p-4 mb-4 text-sm text-foreground">
@@ -92,7 +92,7 @@ export default function QuranTracker() {
         )}
 
         {/* Day grid */}
-        <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2">
+        <div className="flex-grow overflow-auto grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2">
           {progress.map((done, i) => (
             <button
               key={i}

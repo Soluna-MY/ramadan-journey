@@ -46,10 +46,10 @@ export default function DailyHadith() {
   };
 
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="border-border/50 shadow-sm h-full flex flex-col">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-serif flex items-center gap-2">
+          <CardTitle className="text-lg sm:text-xl font-serif flex items-center gap-2">
             <Quote className="w-5 h-5 text-gold" />
             Hadith of the Day
           </CardTitle>
@@ -58,37 +58,39 @@ export default function DailyHadith() {
           </span>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="bg-gradient-to-br from-primary/5 to-gold/5 rounded-xl p-5 border border-border/50 mb-4">
-          <p className="text-foreground font-serif text-base md:text-lg leading-relaxed italic">
-            "{hadith.text}"
-          </p>
-          <div className="mt-4 pt-3 border-t border-border/30">
-            <p className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">{hadith.narrator}</span>
+      <CardContent className="flex-grow flex flex-col">
+        <div className="flex flex-col h-full">
+          <div className="flex-grow bg-gradient-to-br from-primary/5 to-gold/5 rounded-xl p-3 sm:p-4 md:p-5 border border-border/50 mb-4">
+            <p className="text-foreground font-serif text-base md:text-lg leading-relaxed italic">
+              "{hadith.text}"
             </p>
-            <p className="text-xs text-gold mt-1">📖 {hadith.source}</p>
+            <div className="mt-4 pt-3 border-t border-border/30">
+              <p className="text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">{hadith.narrator}</span>
+              </p>
+              <p className="text-xs text-gold mt-1">📖 {hadith.source}</p>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex gap-1">
-            <Button variant="ghost" size="sm" onClick={prev} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
-              <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" onClick={next} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
-              <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
-            </Button>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-10 sm:h-8 text-xs gap-1.5 px-3 touch-manipulation active:scale-95">
-              {copied ? <Check className="w-4 h-4 sm:w-3 sm:h-3" /> : <Copy className="w-4 h-4 sm:w-3 sm:h-3" />}
-              <span className="hidden xs:inline">{copied ? "Copied" : "Copy"}</span>
-            </Button>
-            <Button variant="outline" size="sm" onClick={share} className="h-10 sm:h-8 text-xs gap-1.5 px-3 touch-manipulation active:scale-95">
-              <Share2 className="w-4 h-4 sm:w-3 sm:h-3" />
-              <span className="hidden xs:inline">Share</span>
-            </Button>
+          <div className="flex items-center justify-between">
+            <div className="flex gap-1">
+              <Button variant="ghost" size="sm" onClick={prev} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
+                <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={next} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
+                <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={copyToClipboard} className="h-10 sm:h-8 text-xs gap-1.5 px-3 touch-manipulation active:scale-95">
+                {copied ? <Check className="w-4 h-4 sm:w-3 sm:h-3" /> : <Copy className="w-4 h-4 sm:w-3 sm:h-3" />}
+                <span className="hidden xs:inline">{copied ? "Copied" : "Copy"}</span>
+              </Button>
+              <Button variant="outline" size="sm" onClick={share} className="h-10 sm:h-8 text-xs gap-1.5 px-3 touch-manipulation active:scale-95">
+                <Share2 className="w-4 h-4 sm:w-3 sm:h-3" />
+                <span className="hidden xs:inline">Share</span>
+              </Button>
+            </div>
           </div>
         </div>
       </CardContent>

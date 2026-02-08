@@ -87,7 +87,7 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
   const iftarTime = useMemo(() => prayers.find((p) => p.name === "Maghrib")?.time || "", [prayers]);
 
   return (
-    <Card className="border-border/50 shadow-sm">
+    <Card className="border-border/50 shadow-sm h-full flex flex-col">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-serif flex items-center gap-2">
@@ -113,16 +113,16 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
           </Button>
         </form>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow flex flex-col">
         {loading && <p className="text-sm text-muted-foreground text-center py-4">Loading...</p>}
         {error && <p className="text-sm text-destructive text-center py-4">{error}</p>}
         {!loading && !error && prayers.length > 0 && (
-          <>
+          <div className="flex flex-col h-full">
             {/* Next prayer highlight */}
-            <div className="bg-primary/10 rounded-lg p-3 mb-4 text-center border border-primary/20">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">Next Prayer</p>
-              <p className="text-lg font-serif font-bold text-foreground">{nextPrayer}</p>
-              <p className="text-sm text-gold font-semibold">{countdown}</p>
+            <div className="bg-primary/10 rounded-lg p-5 mb-4 text-center border border-primary/20">
+              <p className="text-sm text-muted-foreground uppercase tracking-wider">Next Prayer</p>
+              <p className="text-2xl font-serif font-bold text-foreground">{nextPrayer}</p>
+              <p className="text-lg text-gold font-semibold">{countdown}</p>
             </div>
 
             {/* Imsak & Iftar */}
@@ -138,7 +138,7 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
             </div>
 
             {/* Prayer list */}
-            <div className="space-y-1">
+            <div className="space-y-1 flex-grow overflow-auto">
               {prayers.map((p) => (
                 <div
                   key={p.name}
@@ -163,7 +163,7 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
                 </div>
               ))}
             </div>
-          </>
+          </div>
         )}
       </CardContent>
     </Card>

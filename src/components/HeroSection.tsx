@@ -6,6 +6,11 @@ function getRamadanStart(): Date {
   return new Date(2026, 1, 18, 0, 0, 0);
 }
 
+function getSyawalStart(): Date {
+  // Syawal follows Ramadan, starting around March 20, 2026
+  return new Date(2026, 2, 20, 0, 0, 0);
+}
+
 function getCountdown(target: Date) {
   const now = new Date();
   const diff = target.getTime() - now.getTime();
@@ -29,19 +34,38 @@ interface HeroProps {
 }
 
 export default function HeroSection({ hijriDate, gregorianDate }: HeroProps) {
-  const [countdown, setCountdown] = useState(getCountdown(getRamadanStart()));
+  const [ramadanCountdown, setRamadanCountdown] = useState(getCountdown(getRamadanStart()));
+  const [syawalCountdown, setSyawalCountdown] = useState(getCountdown(getSyawalStart()));
 
   useEffect(() => {
-    const interval = setInterval(() => setCountdown(getCountdown(getRamadanStart())), 1000);
+    const interval = setInterval(() => {
+      setRamadanCountdown(getCountdown(getRamadanStart()));
+      setSyawalCountdown(getCountdown(getSyawalStart()));
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const countdownUnits = [
-    { label: "Days", value: countdown.days },
-    { label: "Hours", value: countdown.hours },
-    { label: "Minutes", value: countdown.minutes },
-    { label: "Seconds", value: countdown.seconds },
-  ];
+  let currentCountdown;
+  let countdownTitle;
+  let showCountdown = true;
+
+  if (!ramadanCountdown.started) {
+    currentCountdown = ramadanCountdown;
+    countdownTitle = "Days Until Ramadan";
+  } else if (!syawalCountdown.started) {
+    currentCountdown = syawalCountdown;
+    countdownTitle = "Days Until Syawal";
+  } else {
+    showCountdown = false;
+    countdownTitle = "Eid Mubarak!";
+  }
+
+  const countdownUnits = currentCountdown ? [
+    { label: "Days", value: currentCountdown.days },
+    { label: "Hours", value: currentCountdown.hours },
+    { label: "Minutes", value: currentCountdown.minutes },
+    { label: "Seconds", value: currentCountdown.seconds },
+  ] : [];
 
   return (
     <section className="relative overflow-hidden rounded-2xl mx-4 md:mx-0">
@@ -51,20 +75,20 @@ export default function HeroSection({ hijriDate, gregorianDate }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-emerald-deep/95" />
       </div>
 
-      <div className="relative z-10 px-6 py-16 md:py-24 text-center">
+      <div className="relative z-10 px-6 py-4 sm:py-6 text-center">
         {/* Bismillah */}
-        <p className="text-gold font-serif text-lg md:text-xl mb-2 animate-fade-in-up">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+        <p className="text-gold font-serif text-base sm:text-lg md:text-xl mb-2 animate-fade-in-up">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
 
-        <h1 className="text-4xl md:text-6xl font-serif font-bold text-primary-foreground mb-4 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-          Ramadan Journey
+        <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary-foreground mb-2 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          Rayyan - Ramadan Journey
         </h1>
 
-        <p className="text-primary-foreground/80 text-lg md:text-xl max-w-2xl mx-auto mb-2 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+        <p className="text-sm max-w-2xl mx-auto mb-2 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
           Prepare your heart and soul for the blessed month
         </p>
 
         {/* Dates */}
-        <div className="flex items-center justify-center gap-3 text-primary-foreground/70 text-sm mb-10 animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
+        <div className="flex items-center justify-center gap-3 text-primary-foreground/70 text-xs sm:text-sm mb-4 animate-fade-in-up" style={{ animationDelay: "0.25s" }}>
           <span>{gregorianDate}</span>
           {hijriDate && (
             <>
@@ -76,19 +100,19 @@ export default function HeroSection({ hijriDate, gregorianDate }: HeroProps) {
 
         {/* Countdown */}
         <div className="animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-          <p className="text-gold font-semibold text-xs sm:text-sm uppercase tracking-widest mb-4">
-            {countdown.started ? "Ramadan Mubarak!" : "Days Until Ramadan"}
+          <p className="text-gold font-semibold text-xs uppercase tracking-widest mb-2">
+            {countdownTitle}
           </p>
-          {!countdown.started && (
-            <div className="flex justify-center gap-2 xs:gap-3 sm:gap-4 md:gap-6">
+          {showCountdown && (
+            <div className="flex justify-center gap-1 xs:gap-2 sm:gap-3">
               {countdownUnits.map((unit) => (
                 <div key={unit.label} className="flex flex-col items-center">
-                  <div className="w-14 h-14 xs:w-16 xs:h-16 md:w-20 md:h-20 rounded-xl bg-primary-foreground/10 backdrop-blur-sm border border-gold/20 flex items-center justify-center">
-                    <span className="text-xl xs:text-2xl md:text-3xl font-bold text-primary-foreground font-sans">
+                  <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 rounded-lg bg-primary-foreground/10 backdrop-blur-sm border border-gold/20 flex items-center justify-center">
+                    <span className="text-base xs:text-lg sm:text-xl font-bold text-primary-foreground font-sans">
                       {String(unit.value).padStart(2, "0")}
                     </span>
                   </div>
-                  <span className="text-[10px] xs:text-xs text-primary-foreground/60 mt-1.5 sm:mt-2 uppercase tracking-wider">{unit.label}</span>
+                  <span className="text-[8px] xs:text-[10px] text-primary-foreground/60 mt-1 uppercase tracking-wider">{unit.label}</span>
                 </div>
               ))}
             </div>
