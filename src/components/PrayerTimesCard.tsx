@@ -108,7 +108,7 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
             onChange={(e) => setSearchVal(e.target.value)}
             className="text-sm h-9"
           />
-          <Button type="submit" size="sm" variant="outline" className="h-9 px-3">
+          <Button type="submit" size="sm" variant="outline" className="h-9 px-3" aria-label="Search city">
             <Search className="w-4 h-4" />
           </Button>
         </form>

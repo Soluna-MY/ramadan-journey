@@ -76,7 +76,7 @@ export default function Index() {
           <h2 className="font-serif text-lg font-bold text-foreground flex items-center gap-2">
             <span className="text-gold">☪</span> Rayyan - Ramadan Journey
           </h2>
-          <Button variant="ghost" size="sm" onClick={toggleDark} className="h-8 w-8 p-0">
+          <Button variant="ghost" size="sm" onClick={toggleDark} className="h-8 w-8 p-0" aria-label="Toggle dark mode">
             {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
         </div>

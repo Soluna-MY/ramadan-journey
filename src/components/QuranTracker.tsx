@@ -58,6 +58,7 @@ export default function QuranTracker({ className, ...props }: QuranTrackerProps)
               <button
                 onClick={() => setShowStrategy(!showStrategy)}
                 className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Toggle reading strategy guide"
               >
                 <Info className="w-4 h-4" />
               </button>
@@ -72,7 +73,14 @@ export default function QuranTracker({ className, ...props }: QuranTrackerProps)
             <span>{completed} of {TOTAL_DAYS} Juz completed</span>
             <span className="text-gold font-semibold">{percentage}%</span>
           </div>
-          <Progress value={percentage} className="h-2" />
+          <Progress
+            value={percentage}
+            className="h-2"
+            aria-label="Quran completion progress"
+            aria-valuenow={percentage}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          />
         </div>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col">

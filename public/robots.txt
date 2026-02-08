@@ -1,4 +1,20 @@
+# Allow all content for Googlebot - essential for good ranking on Google
+User-agent: Googlebot
+Allow: /
+
+# General rules for all other search engines and bots
+# By default, allow everything unless specified otherwise
 User-agent: *
 Allow: /
+
+# Disallow common administrative or private paths for all bots.
+# This helps focus crawl budget on public, valuable content and protects sensitive areas.
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /login/
+Disallow: /register/
+Disallow: /settings/
+# If you have specific API endpoints not meant for public indexing, add them here.
+# Example: Disallow: /api/
 
 Sitemap: https://rayyan.soluna.my/sitemap.xml

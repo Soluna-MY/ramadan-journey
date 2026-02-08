@@ -77,10 +77,10 @@ export default function DailyHadith({ className, ...props }: DailyHadithProps) {
 
           <div className="flex items-center justify-between">
             <div className="flex gap-1">
-              <Button variant="ghost" size="sm" onClick={prev} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
+              <Button variant="ghost" size="sm" onClick={prev} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95" aria-label="Previous hadith">
                 <ChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
               </Button>
-              <Button variant="ghost" size="sm" onClick={next} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95">
+              <Button variant="ghost" size="sm" onClick={next} className="h-10 w-10 sm:h-8 sm:w-8 p-0 touch-manipulation active:scale-95" aria-label="Next hadith">
                 <ChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
               </Button>
             </div>
