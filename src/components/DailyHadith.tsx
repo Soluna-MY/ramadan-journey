@@ -3,6 +3,7 @@ import { Quote, Copy, Share2, ChevronLeft, ChevronRight, Check } from "lucide-re
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { hadiths } from "@/data/hadiths";
+import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
 function getDayOfYear() {
@@ -12,7 +13,9 @@ function getDayOfYear() {
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
 
-export default function DailyHadith() {
+interface DailyHadithProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default function DailyHadith({ className, ...props }: DailyHadithProps) {
   const todayIndex = getDayOfYear() % hadiths.length;
   const [index, setIndex] = useState(todayIndex);
   const [copied, setCopied] = useState(false);
@@ -46,7 +49,7 @@ export default function DailyHadith() {
   };
 
   return (
-    <Card className="border-border/50 shadow-sm h-full flex flex-col">
+    <Card className={cn("border-border/50 shadow-sm flex flex-col", className)} {...props}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg sm:text-xl font-serif flex items-center gap-2">

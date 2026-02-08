@@ -110,7 +110,7 @@ export default function Index() {
         <div className="hidden 2xl:grid 2xl:grid-cols-3 2xl:gap-6">
           <div className="col-span-2 flex flex-col gap-6">
             <HeroSection hijriDate={date?.hijri || null} gregorianDate={gregorianDate} />
-            <QuranTracker />
+            <QuranTracker className="flex-grow" />
           </div>
           <div className="col-span-1 flex flex-col gap-6">
             <PrayerTimesCard
@@ -121,7 +121,7 @@ export default function Index() {
               error={error}
               onSearch={(c) => setCitySearch(c)}
             />
-            <DailyHadith />
+            <DailyHadith className="flex-grow" />
           </div>
         </div>
       </main>

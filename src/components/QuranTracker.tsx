@@ -3,6 +3,7 @@ import { BookOpen, Check, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "ramadan-quran-tracker";
 const TOTAL_DAYS = 30;
@@ -23,7 +24,9 @@ function loadProgress(): boolean[] {
   return new Array(TOTAL_DAYS).fill(false);
 }
 
-export default function QuranTracker() {
+interface QuranTrackerProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export default function QuranTracker({ className, ...props }: QuranTrackerProps) {
   const [progress, setProgress] = useState<boolean[]>(loadProgress);
   const [showStrategy, setShowStrategy] = useState(false);
 
@@ -43,7 +46,7 @@ export default function QuranTracker() {
   const percentage = Math.round((completed / TOTAL_DAYS) * 100);
 
   return (
-    <Card className="border-border/50 shadow-sm h-full flex flex-col">
+    <Card className={cn("border-border/50 shadow-sm flex flex-col", className)} {...props}>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-serif flex items-center gap-2">
