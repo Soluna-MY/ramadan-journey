@@ -38,7 +38,7 @@ export default function DailyHadith({ className, ...props }: DailyHadithProps) {
   };
 
   const share = async () => {
-    const text = `"${hadith.text}"\n\n— ${hadith.narrator}\n📖 ${hadith.source}\n\n🌙 Shared via Ramadan Journey`;
+    const text = `"${hadith.text}"\n\n— ${hadith.narrator}\n📖 ${hadith.source}\n\nShared via Rayyan\nMade by Soluna (rayyan.soluna.my)`;
     if (navigator.share) {
       try {
         await navigator.share({ text, title: "Hadith of the Day" });
