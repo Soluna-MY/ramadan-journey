@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroPattern from "@/assets/hero-pattern.jpg";
+import { Seo } from "@/components/Seo";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,6 +14,12 @@ const NotFound = () => {
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+      <Seo
+        title="404 - Page Not Found"
+        description="The page you are looking for does not exist."
+        ogTitle="404 - Page Not Found"
+        ogDescription="The page you are looking for does not exist."
+      />
       {/* Background */}
       <div className="absolute inset-0">
         <img src={heroPattern} alt="" className="w-full h-full object-cover opacity-30" />

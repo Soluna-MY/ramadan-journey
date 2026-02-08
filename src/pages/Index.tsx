@@ -6,9 +6,9 @@ import HeroSection from "@/components/HeroSection";
 import PrayerTimesCard from "@/components/PrayerTimesCard";
 import QuranTracker from "@/components/QuranTracker";
 import DailyHadith from "@/components/DailyHadith";
+import { Seo } from "@/components/Seo";
 
 const DARK_MODE_KEY = "ramadan-dark-mode";
-
 function loadDarkMode(): boolean {
   try {
     const stored = localStorage.getItem(DARK_MODE_KEY);
@@ -16,7 +16,6 @@ function loadDarkMode(): boolean {
   } catch {}
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
-
 export default function Index() {
   const [citySearch, setCitySearch] = useState<string | undefined>();
   const [darkMode, setDarkMode] = useState(() => {
@@ -25,7 +24,6 @@ export default function Index() {
     return isDark;
   });
   const { prayers, imsak, date, loading, error, city, fetchByCity } = usePrayerTimes(citySearch);
-
   useEffect(() => {
     localStorage.setItem(DARK_MODE_KEY, JSON.stringify(darkMode));
     if (darkMode) {
@@ -34,15 +32,45 @@ export default function Index() {
       document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
-
   const toggleDark = () => setDarkMode(!darkMode);
-
   const gregorianDate = date
     ? `${date.gregorian.weekday.en}, ${date.gregorian.day} ${date.gregorian.month.en} ${date.gregorian.year}`
     : new Date().toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Rayyan - Ramadan Companion",
+    "description": "Prepare for Ramadan with Rayyan. Track your 30-day Quran completion plan, view localized prayer times, and stay inspired with a daily Hadith. Everything a Muslim needs for a productive and blessed Ramadan in one simple dashboard.",
+    "applicationCategory": "Lifestyle",
+    "operatingSystem": "Any",
+    "url": "https://rayyan.soluna.my",
+    "screenshot": "https://rayyan.soluna.my/og_image.png",
+    "creator": {
+      "@type": "Organization",
+      "name": "Soluna",
+      "url": "https://soluna.my"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Rayyan - Ramadan Companion"
+        description="Prepare for Ramadan with Rayyan. Track your 30-day Quran completion plan, view localized prayer times, and stay inspired with a daily Hadith. Everything a Muslim needs for a productive and blessed Ramadan in one simple dashboard."
+        keywords="Ramadan, Quran, Prayer Times, Hadith, Islam, Muslim"
+        author="Soluna"
+        ogTitle="Rayyan - Ramadan Companion"
+        ogDescription="Prepare for Ramadan with Rayyan. Track your 30-day Quran completion plan, view localized prayer times, and stay inspired with a daily Hadith. Everything a Muslim needs for a productive and blessed Ramadan in one simple dashboard."
+        ogType="website"
+        ogImage="https://rayyan.soluna.my/og_image.png"
+        twitterCard="summary_large_image"
+        twitterSite="@SolunaMY"
+        twitterImage="https://rayyan.soluna.my/og_image.png"
+        canonical="https://rayyan.soluna.my"
+        structuredData={structuredData}
+      />
+      
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
         <div className="container max-w-5xl flex items-center justify-between py-3">
           <h2 className="font-serif text-lg font-bold text-foreground flex items-center gap-2">
@@ -79,8 +107,8 @@ export default function Index() {
         </div>
 
         {/* 2xl layout */}
-        <div className="hidden 2xl:grid 2xl:grid-cols-2 2xl:gap-6">
-          <div className="col-span-1 flex flex-col gap-6">
+        <div className="hidden 2xl:grid 2xl:grid-cols-3 2xl:gap-6">
+          <div className="col-span-2 flex flex-col gap-6">
             <HeroSection hijriDate={date?.hijri || null} gregorianDate={gregorianDate} />
             <QuranTracker />
           </div>
@@ -108,4 +136,3 @@ export default function Index() {
     </div>
   );
 }
-
