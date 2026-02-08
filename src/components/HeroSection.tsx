@@ -76,19 +76,19 @@ export default function HeroSection({ hijriDate, gregorianDate }: HeroProps) {
 
         {/* Countdown */}
         <div className="animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-          <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-4">
+          <p className="text-gold font-semibold text-xs sm:text-sm uppercase tracking-widest mb-4">
             {countdown.started ? "Ramadan Mubarak!" : "Days Until Ramadan"}
           </p>
           {!countdown.started && (
-            <div className="flex justify-center gap-4 md:gap-6">
+            <div className="flex justify-center gap-2 xs:gap-3 sm:gap-4 md:gap-6">
               {countdownUnits.map((unit) => (
                 <div key={unit.label} className="flex flex-col items-center">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-primary-foreground/10 backdrop-blur-sm border border-gold/20 flex items-center justify-center">
-                    <span className="text-2xl md:text-3xl font-bold text-primary-foreground font-sans">
+                  <div className="w-14 h-14 xs:w-16 xs:h-16 md:w-20 md:h-20 rounded-xl bg-primary-foreground/10 backdrop-blur-sm border border-gold/20 flex items-center justify-center">
+                    <span className="text-xl xs:text-2xl md:text-3xl font-bold text-primary-foreground font-sans">
                       {String(unit.value).padStart(2, "0")}
                     </span>
                   </div>
-                  <span className="text-xs text-primary-foreground/60 mt-2 uppercase tracking-wider">{unit.label}</span>
+                  <span className="text-[10px] xs:text-xs text-primary-foreground/60 mt-1.5 sm:mt-2 uppercase tracking-wider">{unit.label}</span>
                 </div>
               ))}
             </div>

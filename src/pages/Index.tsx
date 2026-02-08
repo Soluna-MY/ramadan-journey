@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePrayerTimes } from "@/hooks/usePrayerTimes";
@@ -7,15 +7,36 @@ import PrayerTimesCard from "@/components/PrayerTimesCard";
 import QuranTracker from "@/components/QuranTracker";
 import DailyHadith from "@/components/DailyHadith";
 
+const DARK_MODE_KEY = "ramadan-dark-mode";
+
+function loadDarkMode(): boolean {
+  try {
+    const stored = localStorage.getItem(DARK_MODE_KEY);
+    if (stored !== null) return JSON.parse(stored);
+  } catch {}
+  // Default to system preference
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 export default function Index() {
   const [citySearch, setCitySearch] = useState<string | undefined>();
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    const isDark = loadDarkMode();
+    if (isDark) document.documentElement.classList.add("dark");
+    return isDark;
+  });
   const { prayers, imsak, date, loading, error, city, fetchByCity } = usePrayerTimes(citySearch);
 
-  const toggleDark = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  useEffect(() => {
+    localStorage.setItem(DARK_MODE_KEY, JSON.stringify(darkMode));
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
+
+  const toggleDark = () => setDarkMode(!darkMode);
 
   const gregorianDate = date
     ? `${date.gregorian.weekday.en}, ${date.gregorian.day} ${date.gregorian.month.en} ${date.gregorian.year}`

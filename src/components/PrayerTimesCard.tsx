@@ -142,10 +142,10 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
               {prayers.map((p) => (
                 <div
                   key={p.name}
-                  className={`flex items-center justify-between py-2.5 px-3 rounded-lg transition-colors ${
+                  className={`flex items-center justify-between py-3 sm:py-2.5 px-3 rounded-lg transition-colors touch-manipulation ${
                     nextPrayer === p.name
                       ? "bg-gold/10 border border-gold/20"
-                      : "hover:bg-muted/50"
+                      : "active:bg-muted/70 sm:hover:bg-muted/50"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -154,7 +154,7 @@ export default function PrayerTimesCard({ prayers, imsak, city, loading, error, 
                     </span>
                     <div>
                       <span className="font-medium text-sm text-foreground">{p.name}</span>
-                      <span className="text-xs text-muted-foreground ml-2">{p.arabicName}</span>
+                      <span className="text-xs text-muted-foreground ml-2 hidden xs:inline">{p.arabicName}</span>
                     </div>
                   </div>
                   <span className={`font-mono text-sm ${nextPrayer === p.name ? "text-gold font-bold" : "text-foreground"}`}>
