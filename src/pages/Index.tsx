@@ -74,7 +74,7 @@ export default function Index() {
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/50">
         <div className="container max-w-5xl flex items-center justify-between py-3">
           <h2 className="font-serif text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="text-gold">☪</span> Rayyan - Ramadan Journey
+            <span className="text-gold">☪</span> Rayyan - Ramadan Companion
           </h2>
           <Button variant="ghost" size="sm" onClick={toggleDark} className="h-8 w-8 p-0" aria-label="Toggle dark mode">
             {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}

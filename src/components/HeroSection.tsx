@@ -80,7 +80,7 @@ export default function HeroSection({ hijriDate, gregorianDate }: HeroProps) {
         <p className="text-gold font-serif text-base sm:text-lg md:text-xl mb-2 animate-fade-in-up">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
 
         <h1 className="text-2xl sm:text-3xl font-serif font-bold text-primary-foreground mb-2 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-          Rayyan - Ramadan Journey
+          Rayyan - Ramadan Companion
         </h1>
 
         <p className="text-sm max-w-2xl mx-auto mb-2 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
