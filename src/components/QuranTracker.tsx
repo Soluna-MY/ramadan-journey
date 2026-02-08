@@ -80,11 +80,11 @@ export default function QuranTracker() {
             <p className="text-muted-foreground mb-2">
               Read just 4 pages after each of the 5 daily prayers. That's 20 pages/day = 1 Juz/day = complete Quran in 30 days!
             </p>
-            <div className="grid grid-cols-5 gap-2 mt-3">
+            <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-3">
               {["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].map((p) => (
-                <div key={p} className="text-center bg-secondary rounded-md py-2">
-                  <p className="text-xs font-semibold text-foreground">{p}</p>
-                  <p className="text-xs text-muted-foreground">4 pages</p>
+                <div key={p} className="text-center bg-secondary rounded-md py-2 px-1">
+                  <p className="text-[10px] sm:text-xs font-semibold text-foreground">{p}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">4 pgs</p>
                 </div>
               ))}
             </div>
@@ -92,15 +92,15 @@ export default function QuranTracker() {
         )}
 
         {/* Day grid */}
-        <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-5 lg:grid-cols-6 gap-2">
+        <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-5 lg:grid-cols-6 gap-2">
           {progress.map((done, i) => (
             <button
               key={i}
               onClick={() => toggle(i)}
-              className={`relative rounded-lg p-2 text-center transition-all duration-200 border ${
+              className={`relative rounded-lg p-2.5 sm:p-2 text-center transition-all duration-200 border touch-manipulation active:scale-95 select-none ${
                 done
                   ? "bg-primary border-primary text-primary-foreground shadow-sm"
-                  : "bg-card border-border hover:border-gold/40 hover:bg-gold/5 text-foreground"
+                  : "bg-card border-border active:border-gold/60 active:bg-gold/10 sm:hover:border-gold/40 sm:hover:bg-gold/5 text-foreground"
               }`}
             >
               {done && (
