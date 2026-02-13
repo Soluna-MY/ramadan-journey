@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import html2canvas from "html2canvas";
 import { Quote, Copy, Share2, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,17 @@ function getDayOfYear() {
   return Math.floor(diff / (1000 * 60 * 60 * 24));
 }
 
+// Define harmonious gradient color combinations
+const gradientColors = [
+  { start: "#6DD5ED", end: "#2193B0" }, // Blue to Cyan
+  { start: "#FFB88C", end: "#DE6262" }, // Orange to Red
+  { start: "#56AB2F", end: "#A8E063" }, // Green to Light Green
+  { start: "#333333", end: "#5A5A5A" }, // Dark Grey to Grey
+  { start: "#F7BD2F", end: "#FFA500" }, // Yellow to Orange
+  { start: "#AA076B", end: "#61045F" }, // Pink to Dark Purple
+  { start: "#DA4453", end: "#89216B" }, // Red to Purple
+];
+
 interface DailyHadithProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function DailyHadith({ className, ...props }: DailyHadithProps) {
@@ -20,7 +32,15 @@ export default function DailyHadith({ className, ...props }: DailyHadithProps) {
   const [index, setIndex] = useState(todayIndex);
   const [copied, setCopied] = useState(false);
 
+  const hadithImageRef = useRef<HTMLDivElement>(null);
+
   const hadith = useMemo(() => hadiths[index], [index]);
+
+  // Randomly select a gradient when the Hadith changes
+  const currentGradient = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * gradientColors.length);
+    return gradientColors[randomIndex];
+  }, [hadith]);
 
   const prev = () => setIndex((i) => (i - 1 + hadiths.length) % hadiths.length);
   const next = () => setIndex((i) => (i + 1) % hadiths.length);
@@ -38,11 +58,44 @@ export default function DailyHadith({ className, ...props }: DailyHadithProps) {
   };
 
   const share = async () => {
-    const text = `"${hadith.text}"\n\n— ${hadith.narrator}\n📖 ${hadith.source}\n\nShared via Rayyan\nMade by Soluna (rayyan.soluna.my)`;
+    const textToShare = `"${hadith.text}"\n\n— ${hadith.narrator}\n📖 ${hadith.source}\n\nShared via Rayyan\nMade by Soluna (rayyan.soluna.my)`;
+
     if (navigator.share) {
+      if (hadithImageRef.current) {
+        try {
+          const canvas = await html2canvas(hadithImageRef.current, {
+            useCORS: true,
+            allowTaint: true,
+            // backgroundColor: "#121212", // Removed, now handled by CSS gradient
+            width: 1080,
+            height: 1920,
+          });
+
+          const blob = await new Promise<Blob | null>((resolve) => {
+            canvas.toBlob((b) => resolve(b), "image/png");
+          });
+
+          if (blob) {
+            const file = new File([blob], "hadith.png", { type: "image/png" });
+            await navigator.share({
+              files: [file],
+              title: "Hadith of the Day",
+              text: hadith.text,
+            });
+            toast({ title: "Shared!", description: "Hadith image shared" });
+            return;
+          }
+        } catch (error) {
+          console.error("Error sharing image:", error);
+          toast({ title: "Error", description: "Could not share image", variant: "destructive" });
+        }
+      }
       try {
-        await navigator.share({ text, title: "Hadith of the Day" });
-      } catch {}
+        await navigator.share({ text: textToShare, title: "Hadith of the Day" });
+        toast({ title: "Shared!", description: "Hadith text shared" });
+      } catch (error) {
+        console.error("Error sharing text:", error);
+      }
     } else {
       copyToClipboard();
     }
@@ -97,6 +150,41 @@ export default function DailyHadith({ className, ...props }: DailyHadithProps) {
           </div>
         </div>
       </CardContent>
+
+      {/* Hidden div for image generation */}
+      <div
+        ref={hadithImageRef}
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1080px",
+          height: "1920px",
+          background: `linear-gradient(135deg, ${currentGradient.start}, ${currentGradient.end})`, // Dynamic gradient
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "100px",
+          boxSizing: "border-box",
+          fontFamily: "serif",
+          textAlign: "center",
+        }}
+      >
+        <p style={{ fontSize: "60px", lineHeight: "1.3", marginBottom: "80px", fontStyle: "italic" }}>
+          "{hadith.text}"
+        </p>
+        <p style={{ fontSize: "40px", marginBottom: "20px" }}>
+          — {hadith.narrator}
+        </p>
+        <p style={{ fontSize: "30px", color: "#FFD700" }}>
+          {hadith.source}
+        </p>
+        <p style={{ fontSize: "24px", marginTop: "100px", opacity: "0.7" }}>
+          Shared via Rayyan<br/>Made by Soluna (rayyan.soluna.my)
+        </p>
+      </div>
     </Card>
   );
 }
